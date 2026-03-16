@@ -34,6 +34,21 @@ Das Smart Home wurde in eine verteilte Container-Architektur entkoppelt:
    - `hostNetwork: true` wurde gesetzt, um lokale Integrationen wie **Homematic (CCU)** (IP `192.168.178.29`) nativ per XML-RPC Callbacks (Port 2010 etc.) betreiben zu können.
    - Die alte `homematic` Config wurde in die `configuration.yaml` injiziert.
 
+## Observability (Monitoring & Logging)
+Der Cluster wird vollumfänglich überwacht, um Metriken und Logs zentral zur Verfügung zu stellen:
+
+1. **Prometheus & Grafana**:
+   - Installiert via `kube-prometheus-stack`.
+   - Limitiert auf 1.5GB RAM und 10GB Longhorn-Speicher (7 Tage Retention).
+   - Grafana ist unter `grafana.local` erreichbar.
+2. **Loki & Promtail**:
+   - Installiert via `loki-stack` für zentrales Container-Logging.
+   - **WICHTIGER WORKAROUND**: Das offizielle Helm-Chart installiert eine veraltete Loki-Version (2.6.x), die mit neuen Grafana-Versionen (v11+) Inkompatibilitäten aufweist (`syntax error: unexpected IDENTIFIER`). Das Image muss zwingend auf `2.9.3` überschrieben werden (`loki-values.yaml`).
+   - Die Datenquelle in Grafana wird via Helm `additionalDataSources` vollautomatisch samt `X-Scope-OrgID: 1` injiziert.
+3. **Home Assistant Logging**:
+   - Home Assistant schreibt standardmäßig alles lautlos in `/config/home-assistant.log` und ist für Promtail auf `stdout` unsichtbar.
+   - **Workaround:** Im Deployment wurde ein `log-tailer` Sidecar-Container (`busybox`) hinzugefügt, der die Datei ausliest und per `tail -F` auf seinen `stdout` streamt, sodass die Logs in Loki/Grafana auftauchen.
+
 ## Wichtige Konfigurationsdateien
 Alle YAML-Manifeste und Configs liegen lokal unter `~/private/homelab/talos/`:
 - `talosconfig`: Die API-Konfiguration für `talosctl`.

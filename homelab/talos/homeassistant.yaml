@@ -51,6 +51,13 @@ spec:
           mountPath: /config
         - name: run
           mountPath: /run
+      - name: log-tailer
+        image: busybox
+        command: ["/bin/sh", "-c", "tail -n+1 -F /config/home-assistant.log"]
+        volumeMounts:
+        - name: config
+          mountPath: /config
+          readOnly: true
       volumes:
       - name: config
         persistentVolumeClaim:

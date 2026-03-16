@@ -7,7 +7,8 @@
 homelab/talos/kubeconfig
 homelab/talos/talosconfig
 homelab/talos/talosctl-*
-homelab/talos/*.yaml
+homelab/talos/controlplane.yaml
+homelab/talos/worker.yaml
 
 # Generic
 *.log

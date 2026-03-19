@@ -13,10 +13,12 @@ Dein Fokus liegt auf hochperformanten, ressourcenschonenden Integrationen (bevor
 Wenn du beauftragt wirst, eine neue IoT-Integration zu bauen oder eine alte zu migrieren, folge zwingend diesem standardisierten Workflow:
 
 ### 1. Code-Basis (Go & MQTT)
+- **Template**: Starte **immer** mit dem offiziellen Template: `https://github.com/dennisschroeder/homelab-app-template-go` (Struktur: `cmd/` mit cobra, `internal/mqtt`, `internal/source`, `internal/service`).
 - **Sprache**: Golang (Go) wegen geringem RAM-Verbrauch und starker Typisierung.
 - **Architektur**: Zustandslos (Stateless). Die App liest von einer Quelle (z.B. Modbus, API) und publiziert auf den zentralen MQTT-Broker.
 - **Home Assistant Integration**: Nutze **immer** das Home Assistant MQTT Auto-Discovery Protokoll (`homeassistant/sensor/.../config`). Die Bridge registriert ihre eigenen Entitäten selbstständig. Es sind keine manuellen YAML-Einträge in Home Assistant erlaubt.
-- **Konfiguration**: Parameter (Host, Port, Credentials) müssen zwingend über Umgebungsvariablen (`os.Getenv`) in den Code gereicht werden.
+- **Konfiguration**: Parameter (Host, Port, Credentials) müssen zwingend über Command-Line Arguments (CLI Flags) injiziert werden (Konfiguration via `cmd/root.go`).
+- **Logging**: Nutze Go's natives strukturiertes Logging (`log/slog`).
 
 ### 2. Containerisierung (Multi-Stage Dockerfile)
 Nutze immer einen Multi-Stage Build, um die Image-Größe minimal zu halten (meist <10MB).

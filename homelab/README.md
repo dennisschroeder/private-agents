@@ -33,6 +33,10 @@ Das Smart Home wurde in eine verteilte Container-Architektur entkoppelt:
    - Läuft im Cluster unter `ha.local`.
    - `hostNetwork: true` wurde gesetzt, um lokale Integrationen wie **Homematic (CCU)** (IP `192.168.178.29`) nativ per XML-RPC Callbacks (Port 2010 etc.) betreiben zu können.
    - Die alte `homematic` Config wurde in die `configuration.yaml` injiziert.
+5. **Wärmepumpen-Integration (Stiebel Eltron)**:
+   - Migration von einem in einer ConfigMap injizierten Python-Skript zu einem dedizierten, in Go geschriebenen Microservice (`stiebel-modbus2mqtt`).
+   - Erfasst Modbus TCP (Register für Temperaturen, Pumpenstatus via Bitmasking, Bivalenzpunkte) und publiziert über MQTT für Home Assistant Auto-Discovery.
+   - Das Docker-Image liegt in einer privaten GitHub Container Registry (GHCR) und wird über Kubernetes-Secrets (`imagePullSecrets`) authentifiziert.
 
 ## Observability (Monitoring & Logging)
 Der Cluster wird vollumfänglich überwacht, um Metriken und Logs zentral zur Verfügung zu stellen:

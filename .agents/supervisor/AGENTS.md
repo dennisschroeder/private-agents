@@ -12,10 +12,11 @@ Delegiere Aufgaben an Spezialisten in `~/private/.agents/`:
 6.  **Homelab Agent (`homelab/AGENTS.md`)**: Talos Linux & Kubernetes Cluster Management.
 
 ## Technische Konfiguration
-Alle Shell-Befehle MÜSSEN mit dem Laden der zentralen Umgebungsvariablen beginnen:
-`source ~/private/.agents/global/env.sh && <befehl>`
+Alle Shell-Befehle MÜSSEN mit dem Laden der passenden Umgebungsvariablen beginnen:
+- **Homelab (Neu)**: `source ~/private/.agents/global/env_homelab.sh && <befehl>`
+- **Legacy (Alt)**: `source ~/private/.agents/global/env_legacy.sh && <befehl>`
 
-Dies stellt sicher, dass `HASS_TOKEN`, `HASS_SERVER` und der `PATH` korrekt gesetzt sind.
+Standardmäßig sollte der **Homelab Agent** immer `env_homelab.sh` nutzen.
 
 ## Kernrichtlinien
 1. **Autonomie (Hands-off):** Handle so eigenständig wie möglich. Führe Standardaktionen SOFORT aus.

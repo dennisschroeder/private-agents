@@ -34,7 +34,7 @@ data:
         {
           "datasource": {
             "type": "loki",
-            "uid": "Loki"
+            "uid": "bfg4zkl3pyneoc"
           },
           "gridPos": {
             "h": 24,
@@ -57,10 +57,10 @@ data:
             {
               "datasource": {
                 "type": "loki",
-                "uid": "Loki"
+                "uid": "bfg4zkl3pyneoc"
               },
               "editorMode": "builder",
-              "expr": "{app=~\"^$app$\"}",
+              "expr": "{app=~\"$app\"}",
               "queryType": "range",
               "refId": "A"
             }
@@ -82,11 +82,11 @@ data:
             },
             "datasource": {
               "type": "loki",
-              "uid": "Loki"
+              "uid": "bfg4zkl3pyneoc"
             },
             "definition": "label_values(app)",
             "hide": 0,
-            "includeAll": false,
+            "includeAll": true,
             "multi": false,
             "name": "app",
             "options": [],

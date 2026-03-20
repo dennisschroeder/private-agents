@@ -15,6 +15,8 @@ Wenn du beauftragt wirst, eine neue IoT-Integration zu bauen oder eine alte zu m
 ### 1. Code-Basis (Go & MQTT)
 - **Template**: Starte **immer** mit dem offiziellen Template: `https://github.com/dennisschroeder/homelab-app-template-go` (Struktur: `cmd/` mit cobra, `internal/mqtt`, `internal/source`, `internal/service`).
 - **Sprache**: Golang (Go) wegen geringem RAM-Verbrauch und starker Typisierung.
+- **MQTT Stabilität**: Nutze `SetAutoReconnect(true)`, `SetCleanSession(false)` und `SetResumeSubs(true)` für robuste Verbindungen.
+- **Verfügbarkeit (LWT)**: Implementiere zwingend ein *Last Will and Testament* (LWT) auf einem `status` Topic (Payloads: `online`/`offline`). Integriere dieses Topic in das HA Discovery Payload (`availability_topic`).
 - **Architektur**: Zustandslos (Stateless). Die App liest von einer Quelle (z.B. Modbus, API) und publiziert auf den zentralen MQTT-Broker.
 - **Home Assistant Integration**: Nutze **immer** das Home Assistant MQTT Auto-Discovery Protokoll (`homeassistant/sensor/.../config`). Die Bridge registriert ihre eigenen Entitäten selbstständig. Es sind keine manuellen YAML-Einträge in Home Assistant erlaubt.
 - **Konfiguration**: Parameter (Host, Port, Credentials) müssen zwingend über Command-Line Arguments (CLI Flags) injiziert werden (Konfiguration via `cmd/root.go`).
@@ -50,6 +52,7 @@ ENTRYPOINT ["/service"]
   - Die `client_id` dient als Namespace (z.B. `fritz_presence`).
   - Der `slug_name` wird aus dem konfigurierten Namen generiert (lowercase, Unterstriche statt Leerzeichen).
   - Dies stellt sicher, dass Entitäten eindeutig zuordenbar sind und Namenskollisionen vermieden werden.
+- **Device-Hierarchie**: Registriere die Bridge als zentrales Gateway (`via_device`) und ordne alle physischen Sensoren/Aktoren als eigene Untergeräte zu, falls sinnvoll.
 - **Cobra Flags in Kubernetes**: Achte bei der Verwendung des `cobra` Packages zwingend darauf, dass Container-Argumente im Kubernetes Deployment mit einem **Doppel-Bindestrich** (`--flag=value`) übergeben werden, da ein einfacher Bindestrich zu einem Fehler beim Parsen führt (`unknown shorthand flag`).
 - **Never guess Modbus Registers**: Wenn du Modbus-Integrationen schreibst (z.B. Stiebel Eltron), verifiziere die Register-Typen (Input vs Holding) und Datentypen exakt anhand der Dokumentation.
 - **Zero-Trust & Stateless**: IoT-Bridges speichern keinen State. Wenn sie abstürzen und Kubernetes sie neu startet, müssen sie sofort wieder einsatzbereit sein.

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<methodResponse><params><param>
+	<value><array><data><value><struct><member><name>ADDRESS</name><value>BidCoS-RF</value></member><member><name>TYPE</name><value>HM-RCV-50</value></member></struct></value><value><struct><member><name>ADDRESS</name><value>OEQ1220881:1</value></member><member><name>PARENT</name><value>OEQ1220881</value></member><member><name>TYPE</name><value>BLIND</value></member></struct></value><value><struct><member><name>ADDRESS</name><value>OEQ1220882:1</value></member><member><name>PARENT</name><value>OEQ1220882</value></member><member><name>TYPE</name><value>BLIND</value></member></struct></value></data></array></value>
+</param></params></methodResponse>

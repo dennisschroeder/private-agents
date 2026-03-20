@@ -1,0 +1,18 @@
+# Binaries
+fritz-presence
+service
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Dependencies
+vendor/
+
+# IDEs
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
